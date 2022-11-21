@@ -30,13 +30,21 @@ const registerUser = async (req, res) => {
 
         const encryptedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await knex('users').insert({ username, password: encryptedPassword });
+        const newUser = await knex('users').
+            insert({ username, password: encryptedPassword });
 
         if (newUser.rowCount < 1) {
             return res.status(400).json('O usuário não foi cadastrado.');
+        } else {
+            await knex('accounts').insert({ balance: 10000 });
+
+            const accountList = await knex('accounts');
+            const idNewAccount = accountList[accountList.length - 1].id;
+
+            await knex('users').where({ username }).update({ accountid: idNewAccount });
         }
 
-        return res.status(201).json('Usuário cadastrada com sucesso!');
+        return res.status(201).json('Usuário cadastrado com sucesso!');
 
     } catch (error) {
         return res.status(400).json(error.message);
