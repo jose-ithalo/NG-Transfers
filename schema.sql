@@ -1,10 +1,10 @@
 CREATE DATABASE ng_cash;
 
-DROP TABLE IF EXISTS Accounts
+DROP TABLE IF EXISTS Accounts;
 
-DROP TABLE IF EXISTS Users
+DROP TABLE IF EXISTS Users;
 
-DROP TABLE IF EXISTS Transactions
+DROP TABLE IF EXISTS Transactions;
 
 CREATE TABLE IF NOT EXISTS Accounts (
 	id serial primary key,
