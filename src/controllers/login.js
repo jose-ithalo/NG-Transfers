@@ -24,7 +24,7 @@ const login = async (req, res) => {
             return res.status(400).json('Usuário ou senha não confere.');
         }
 
-        const token = jwt.sign({ id: foundUser[0].id }, passwordHash, { expiresIn: '24h' });
+        const token = jwt.sign({ accountid: foundUser[0].accountid }, passwordHash, { expiresIn: '24h' });
 
         const { password: _, ...userData } = foundUser[0];
 
