@@ -3,7 +3,7 @@ const express = require('express');
 const login = require('./controllers/login');
 const { registerUser } = require('./controllers/users');
 const { verifyLogin } = require('./filters/verifyLogin');
-const { viewBalance } = require('./controllers/accounts');
+const { viewBalance, cashOut } = require('./controllers/accounts');
 
 const routes = express();
 
@@ -19,5 +19,6 @@ routes.use(verifyLogin);
 
 routes.get('/balance', viewBalance);
 
+routes.post('/transfer', cashOut);
 
 module.exports = routes;
