@@ -22,6 +22,6 @@ CREATE TABLE IF NOT EXISTS Transactions (
 	id serial primary key,
   	debitedAccountId integer references Accounts(id) not null,
   	creditedAccountId integer references Accounts(id) not null,
-  	value decimal not null,
-  	createdAt text not null
+  	value real not null,
+  	createdAt date default now()
 );
