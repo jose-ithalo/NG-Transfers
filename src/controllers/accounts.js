@@ -28,16 +28,36 @@ const cashOut = async (req, res) => {
 
     try {
 
+        const registeredBeneficiary = await knex('users').where({ username: recipient }).first();
+
+        if (!registeredBeneficiary) {
+            return res.status(404).json('Benefiário não encontrado. Verifique o nome digitado.')
+        }
+
         const userAccount = await knex('accounts').where({ id: accountid }).first();
+
+        if (!userAccount) {
+            return res.status(404).json('Erro! Conta não encontrada.')
+        }
+
         const currentBalance = userAccount.balance / 100;
 
         if (value > currentBalance) {
             return res.status(400).json('Saldo insuficiente para transação.');
         }
 
-        const balanceResult = currentBalance - value;
+        const remainingBalance = currentBalance - value;
 
-        return res.status(200).json(userAccount);
+        await knex('accounts').update({ balance: remainingBalance * 100 }).where({ id: accountid });
+
+        const beneficiaryAccount = await knex('accounts').where({ id: registeredBeneficiary.accountid }).first();
+
+        const beneficiaryBalance = beneficiaryAccount.balance + (value * 100);
+
+        await knex('accounts').update({ balance: beneficiaryBalance }).
+            where({ id: registeredBeneficiary.accountid });
+
+        return res.status(200).json('Cash-out realizado com sucesso!');
 
     } catch (error) {
         return res.status(400).json(error.message);
