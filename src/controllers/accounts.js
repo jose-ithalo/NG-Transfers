@@ -26,9 +26,9 @@ const cashOut = async (req, res) => {
         return res.status(400).json({ mensagem: 'Não será possível fazer um cash-in para você mesmo.' })
     }
 
-    try {
+    const registeredBeneficiary = await knex('users').where({ username: recipient }).first();
 
-        const registeredBeneficiary = await knex('users').where({ username: recipient }).first();
+    try {
 
         if (!registeredBeneficiary) {
             return res.status(404).json('Benefiário não encontrado. Verifique o nome digitado.')
@@ -57,12 +57,20 @@ const cashOut = async (req, res) => {
         await knex('accounts').update({ balance: beneficiaryBalance }).
             where({ id: registeredBeneficiary.accountid });
 
-        return res.status(200).json('Cash-out realizado com sucesso!');
+    } catch (error) {
+        return res.status(400).json('Erro na transação.');
+    }
+
+    try {
+
+        await knex('transactions').
+            insert({ debitedaccountid: accountid, creditedaccountid: registeredBeneficiary.accountid, value })
 
     } catch (error) {
         return res.status(400).json(error.message);
     }
 
+    return res.status(200).json('Cash-out realizado com sucesso!');
 }
 
 module.exports = {
