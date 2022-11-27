@@ -4,12 +4,9 @@ const login = require('./controllers/login');
 const { registerUser } = require('./controllers/users');
 const { verifyLogin } = require('./filters/verifyLogin');
 const { viewBalance, cashOut } = require('./controllers/accounts');
+const { viewTransactions } = require('./controllers/transactions');
 
 const routes = express();
-
-routes.get('/', function (req, res) {
-    res.status(201).json('MSG DE ROUTES');
-});
 
 routes.post('/register', registerUser);
 
@@ -20,5 +17,7 @@ routes.use(verifyLogin);
 routes.get('/balance', viewBalance);
 
 routes.post('/transfer', cashOut);
+
+routes.get('/transactions', viewTransactions);
 
 module.exports = routes;
