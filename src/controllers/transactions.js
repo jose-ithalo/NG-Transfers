@@ -58,6 +58,11 @@ const viewTransactions = async (req, res) => {
                             filteredData.push(element);
                         }
                     }
+
+                    if (filteredData.length === 0) {
+                        return res.status(404).json('Nenhum resultado encontrado.');
+                    }
+
                     return res.status(200).json(filteredData);
 
                 } else if (cashIn === true) {
@@ -67,6 +72,11 @@ const viewTransactions = async (req, res) => {
                             filteredData.push(element);
                         }
                     }
+
+                    if (filteredData.length === 0) {
+                        return res.status(404).json('Nenhum resultado encontrado.');
+                    }
+
                     return res.status(200).json(filteredData);
                 }
 
@@ -81,6 +91,10 @@ const viewTransactions = async (req, res) => {
 
             const cashOutData = await knex('transactions').where({ debitedaccountid: accountid });
 
+            if (cashOutData.length === 0) {
+                return res.status(404).json('Nenhum resultado encontrado.');
+            }
+
             for (let element of cashOutData) {
                 const formatedData = format(element.createdat, "dd/MMM/yyyy");
                 element.value = element.value.toFixed(2);
@@ -93,6 +107,10 @@ const viewTransactions = async (req, res) => {
         if (cashIn === true) {
 
             const cashInData = await knex('transactions').where({ creditedaccountid: accountid });
+
+            if (cashInData.length === 0) {
+                return res.status(404).json('Nenhum resultado encontrado.');
+            }
 
             for (let element of cashInData) {
                 const formatedData = format(element.createdat, "dd/MMM/yyyy");
