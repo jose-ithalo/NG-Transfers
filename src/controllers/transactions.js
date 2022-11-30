@@ -1,4 +1,5 @@
 const knex = require('../services/connection');
+const format = require('date-fns/format');
 
 const viewTransactions = async (req, res) => {
     const { accountid } = req.user;
@@ -16,18 +17,11 @@ const viewTransactions = async (req, res) => {
                 return res.status(404).json('Nenhuma transação encontrada.');
             }
 
-            const formatedTransactions = [];
-
             for (let element of userTransaction) {
-                const dayData = ''
-                const dayMonth = ''
-                const dayYear = ''
-
-                formatedTransactions.push(element)
+                const formatedData = format(element.createdat, "dd/MMM/yyyy");
+                element.value = element.value.toFixed(2);
+                element.createdat = formatedData;
             }
-            console.log(formatedTransactions);
-
-            // console.log(userTransaction[0].createdat.getMonth());
 
             return res.status(200).json(userTransaction);
 
@@ -47,6 +41,12 @@ const viewTransactions = async (req, res) => {
 
                 if (chosenDate.length === 0) {
                     return res.status(404).json('Não há transações correspondentes à essa data');
+                }
+
+                for (let element of chosenDate) {
+                    const formatedData = format(element.createdat, "dd/MMM/yyyy");
+                    element.value = element.value.toFixed(2);
+                    element.createdat = formatedData;
                 }
 
                 const filteredData = [];
@@ -81,12 +81,24 @@ const viewTransactions = async (req, res) => {
 
             const cashOutData = await knex('transactions').where({ debitedaccountid: accountid });
 
+            for (let element of cashOutData) {
+                const formatedData = format(element.createdat, "dd/MMM/yyyy");
+                element.value = element.value.toFixed(2);
+                element.createdat = formatedData;
+            }
+
             return res.status(200).json(cashOutData);
         }
 
         if (cashIn === true) {
 
             const cashInData = await knex('transactions').where({ creditedaccountid: accountid });
+
+            for (let element of cashInData) {
+                const formatedData = format(element.createdat, "dd/MMM/yyyy");
+                element.value = element.value.toFixed(2);
+                element.createdat = formatedData;
+            }
 
             return res.status(200).json(cashInData);
         }
