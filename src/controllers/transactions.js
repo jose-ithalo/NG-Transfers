@@ -12,11 +12,22 @@ const viewTransactions = async (req, res) => {
                 .where({ debitedaccountid: accountid })
                 .orWhere({ creditedaccountid: accountid });
 
-            // const { createdat: _, ...formatedTransaction } = userTransaction;
-
             if (userTransaction.length === 0) {
                 return res.status(404).json('Nenhuma transação encontrada.');
             }
+
+            const formatedTransactions = [];
+
+            for (let element of userTransaction) {
+                const dayData = ''
+                const dayMonth = ''
+                const dayYear = ''
+
+                formatedTransactions.push(element)
+            }
+            console.log(formatedTransactions);
+
+            // console.log(userTransaction[0].createdat.getMonth());
 
             return res.status(200).json(userTransaction);
 
@@ -79,8 +90,6 @@ const viewTransactions = async (req, res) => {
 
             return res.status(200).json(cashInData);
         }
-
-        return res.status(200).json('Informações digitadas.');
     }
 
 }
