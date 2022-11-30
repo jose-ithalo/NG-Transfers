@@ -28,12 +28,42 @@ const viewTransactions = async (req, res) => {
 
         if (date) {
 
-            console.log(date);
+            try {
 
-            const chosenDate = await knex('transactions').where({ createdat: date });
+                const chosenDate = await knex('transactions')
+                    .where({ createdat: date, debitedaccountid: accountid })
+                    .orWhere({ createdat: date, creditedaccountid: accountid })
 
-            return res.status(200).json(chosenDate);
+                if (chosenDate.length === 0) {
+                    return res.status(404).json('Não há transações correspondentes à essa data');
+                }
 
+                const filteredData = [];
+
+                if (cashOut === true) {
+                    for (let element of chosenDate) {
+
+                        if (element.debitedaccountid === accountid) {
+                            filteredData.push(element);
+                        }
+                    }
+                    return res.status(200).json(filteredData);
+
+                } else if (cashIn === true) {
+                    for (let element of chosenDate) {
+
+                        if (element.creditedaccountid === accountid) {
+                            filteredData.push(element);
+                        }
+                    }
+                    return res.status(200).json(filteredData);
+                }
+
+                return res.status(200).json(chosenDate);
+
+            } catch (error) {
+                return res.status(400).json('Data inválida.')
+            }
         }
 
         if (cashOut === true) {
