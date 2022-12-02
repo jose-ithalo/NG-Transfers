@@ -20,9 +20,9 @@
 * cashIn
 
 ## Endpoints
-#### `POST` `/cadastrarContatos`
+#### `POST` `/resgister`
 
-### Tecnologias usadas
+## Tecnologias usadas
 
 <table>
   <tr>
@@ -37,7 +37,8 @@
   </tr>
 </table>
 
-### Como rodar a aplicação:
-1. No editor de código-fonte acesse pelo console a pasta onde se encontra o projeto.
-2. Execute o comando npm install ou yarn add para instalar todos pacotes necessários que estão no package.json. 
+## Como rodar a aplicação:
+1. No editor de código-fonte, acesse pelo console a pasta onde se encontra o projeto.
+2. Execute o comando npm install ou yarn add para que todos pacotes necessários que estão no package.json funcionem.
+3. Por fim, digite o comando npm run dev e aguarde a mensagem: 'Server on working...'. 
 
