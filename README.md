@@ -19,6 +19,9 @@
 * cashOut
 * cashIn
 
+## Endpoints
+#### `POST` `/cadastrarContatos`
+
 ### Tecnologias usadas
 
 <table>
@@ -35,4 +38,6 @@
 </table>
 
 ### Como rodar a aplicação:
-1.
+1. No editor de código-fonte acesse pelo console a pasta onde se encontra o projeto.
+2. Execute o comando npm install ou yarn add para instalar todos pacotes necessários que estão no package.json. 
+
